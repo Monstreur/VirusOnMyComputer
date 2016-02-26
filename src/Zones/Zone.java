@@ -1,7 +1,9 @@
-package jeu;
+package Zones;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import autres.Couleur;
 
 public class Zone implements ZoneMarchable{
 	private String name;
@@ -9,20 +11,28 @@ public class Zone implements ZoneMarchable{
 	private List<ZoneMarchable> zoneMarchables;
 	
 	public Zone(String name, Couleur color){
-		this(name, color, new ArrayList<ZoneMarchable>());
+		this.name = name;
+		this.color = color;
+		this.zoneMarchables = new ArrayList<ZoneMarchable>();
 	}
-	
+	/*
 	public Zone(String name, Couleur color, List<ZoneMarchable> zoneMarchables){
 		this.name = name;
 		this.color = color;
 		this.zoneMarchables = zoneMarchables;
 	}
+	*/
 	
 	public List<ZoneMarchable> getZoneMarchables() {
 		return zoneMarchables;
 	}
-	public void setZoneMarchables(List<ZoneMarchable> zoneMarchables) {
-		this.zoneMarchables = zoneMarchables;
+	@Override
+	public boolean addZoneMarchable(ZoneMarchable zm) {
+		return this.zoneMarchables.add(zm);
+	}
+	
+	public int getNum() {
+		return Integer.parseInt(name);
 	}
 	public String getName() {
 		return name;
