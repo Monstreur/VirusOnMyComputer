@@ -3,6 +3,11 @@ package jeu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 import Zones.Passerelle;
 import Zones.Zone;
 import Zones.ZoneApparition;
@@ -12,6 +17,7 @@ import autres.Couleur;
 public class Plateau {
 	private List<ZoneApparition> zoneApparitions;
 	private List<ZoneMarchable> zoneMarchables;
+	private Image img;
 	
 	public Plateau(){
 		this.zoneApparitions = new ArrayList<ZoneApparition>();
@@ -34,6 +40,16 @@ public class Plateau {
 
 		this.zoneMarchables.addAll(zones);
 		this.zoneMarchables.addAll(passerelles);
+		
+		try {
+			this.img = new Image("res/img/plateau.png");
+		} catch (SlickException e) {
+			System.out.println("SlickException: Erreur de chargement de l'image du plateau ("+e.getMessage()+")");
+		}
+	}
+	
+	public void render(GameContainer container, Graphics g) throws SlickException {
+		this.img.draw(0, 0, container.getWidth(), container.getHeight());
 	}
 
 	public ZoneMarchable getZoneApparition(Couleur color) {

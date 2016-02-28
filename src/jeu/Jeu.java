@@ -3,6 +3,10 @@ package jeu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+
 import Joueurs.Joueur;
 import Joueurs.ListeJoueurs;
 import Zones.Passerelle;
@@ -148,6 +152,9 @@ public class Jeu {
 		
 	}
 	
+    public void render(GameContainer container, Graphics g) throws SlickException {
+    	this.plateau.render(container, g);
+    }
 	
 	public String toString(){
 		String ret ="[Jeu]\n";

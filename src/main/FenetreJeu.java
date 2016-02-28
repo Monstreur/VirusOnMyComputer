@@ -31,7 +31,7 @@ public class FenetreJeu extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-    	
+    	this.jeu.render(container,g);
     }
 
     @Override
@@ -56,8 +56,6 @@ public class FenetreJeu extends BasicGame {
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
     	this.mouseX=newx;
     	this.mouseY=newy;
-    	
-    	
     }
     
     @Override
@@ -66,6 +64,6 @@ public class FenetreJeu extends BasicGame {
     }
     
     public static void main(String[] args) throws SlickException {
-    	new AppGameContainer(new FenetreJeu(), 1024, 768, false).start();
+    	new AppGameContainer(new FenetreJeu(), 800, 600, false).start();
     }
 }
