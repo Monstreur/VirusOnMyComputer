@@ -22,9 +22,9 @@ public class Jeu {
 	private Plateau plateau;
 	private int nbDeplacementMaxJoueur;
 	
-	public Jeu(){
+	public Jeu(int hPlateau){
 		this.nbDeplacementMaxJoueur = 3;
-		this.plateau = new Plateau();
+		this.plateau = new Plateau(hPlateau);
 		
 		this.joueurs = new ListeJoueurs();
 		this.joueurs.add(Joueur.BLUE);
@@ -154,6 +154,7 @@ public class Jeu {
 	
     public void render(GameContainer container, Graphics g) throws SlickException {
     	this.plateau.render(container, g);
+    	this.plateau.draw(g);
     }
 	
 	public String toString(){
@@ -165,11 +166,15 @@ public class Jeu {
 		return ret;
 	}
 	
+	public Plateau getPlateau(){
+		return this.plateau;
+	}
+
+	/*
 	public static void main(String[] args){
-		Jeu j = new Jeu();
+		Jeu j = new Jeu(1024);
 		j.jouerRound();
 		j.jouerRound();
-		/*
 		System.out.print(j);
 		
 		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
@@ -199,8 +204,9 @@ public class Jeu {
 		
 		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
 		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-		*/
+		
 	}
+	*/
 	
 	
 }

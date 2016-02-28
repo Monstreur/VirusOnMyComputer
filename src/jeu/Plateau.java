@@ -1,6 +1,7 @@
 package jeu;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
@@ -12,6 +13,7 @@ import Zones.Passerelle;
 import Zones.Zone;
 import Zones.ZoneApparition;
 import Zones.ZoneMarchable;
+import autres.CarreArea;
 import autres.Couleur;
 
 public class Plateau {
@@ -19,16 +21,16 @@ public class Plateau {
 	private List<ZoneMarchable> zoneMarchables;
 	private Image img;
 	
-	public Plateau(){
+	public Plateau(int hPlateau){
 		this.zoneApparitions = new ArrayList<ZoneApparition>();
-		this.zoneApparitions.add(ZoneApparition.BLUE);
-		this.zoneApparitions.add(ZoneApparition.RED);
-		this.zoneApparitions.add(ZoneApparition.GREEN);
-		this.zoneApparitions.add(ZoneApparition.YELLOW);
+		this.zoneApparitions.add(new ZoneApparition(Couleur.BLUE,2362,23008,hPlateau));
+		this.zoneApparitions.add(new ZoneApparition(Couleur.RED,23008,2362,hPlateau));
+		this.zoneApparitions.add(new ZoneApparition(Couleur.GREEN,2362,0,hPlateau));
+		this.zoneApparitions.add(new ZoneApparition(Couleur.YELLOW,0,2362,hPlateau));
 		
 		this.zoneMarchables = new ArrayList<ZoneMarchable>();
-		List<Zone> zones = this.ajouteZones();
-		List<Passerelle> passerelles = this.ajoutePasserelles();
+		List<Zone> zones = this.ajouteZones(hPlateau);
+		List<Passerelle> passerelles = this.ajoutePasserelles(hPlateau);
 		
 		this.createLinksForZones(zones,passerelles);
 		this.createLinksForPasserelles(zones,passerelles);
@@ -49,7 +51,7 @@ public class Plateau {
 	}
 	
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		this.img.draw(0, 0, container.getWidth(), container.getHeight());
+		this.img.draw(0, 0, container.getHeight(), container.getHeight());
 	}
 
 	public ZoneMarchable getZoneApparition(Couleur color) {
@@ -60,6 +62,21 @@ public class Plateau {
 		}
 		return null;
 	}
+	
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+    	for (ZoneMarchable zm : zoneMarchables) {
+			if(zm.getCarreArea().contain(newx, newy))
+				System.out.println("In : "+zm);
+		}
+    }
+	
+	public void draw(Graphics g) {
+		for (ZoneMarchable zm : zoneMarchables) {
+			CarreArea tmp = zm.getCarreArea();
+			if(tmp.isHover())
+				tmp.draw(g);
+		}
+    }
 	
 	public static List<Integer> getZoneNums(Couleur color){
 		List<Integer> ret = new ArrayList<Integer>();
@@ -114,93 +131,93 @@ public class Plateau {
 	
 	
 	
-	private List<Zone> ajouteZones() {
+	private List<Zone> ajouteZones(int hPlateau) {
 		List<Zone> zones = new ArrayList<Zone>();
-		zones.add(new Zone("01",Couleur.BLUE));
-		zones.add(new Zone("02",Couleur.RED));
-		zones.add(new Zone("03",Couleur.GREEN));
-		zones.add(new Zone("04",Couleur.YELLOW));
-		zones.add(new Zone("05",Couleur.BLUE));
-		zones.add(new Zone("06",Couleur.RED));
-		zones.add(new Zone("07",Couleur.GREEN));
-		zones.add(new Zone("08",Couleur.YELLOW));
-		zones.add(new Zone("09",Couleur.BLUE));
-		zones.add(new Zone("10",Couleur.RED));
-		zones.add(new Zone("11",Couleur.GREEN));
-		zones.add(new Zone("12",Couleur.YELLOW));
-		zones.add(new Zone("13",Couleur.BLUE));
-		zones.add(new Zone("14",Couleur.RED));
-		zones.add(new Zone("15",Couleur.GREEN));
-		zones.add(new Zone("16",Couleur.YELLOW));
-		zones.add(new Zone("17",Couleur.BLUE));
-		zones.add(new Zone("18",Couleur.RED));
-		zones.add(new Zone("19",Couleur.GREEN));
-		zones.add(new Zone("20",Couleur.YELLOW));
-		zones.add(new Zone("21",Couleur.BLUE));
-		zones.add(new Zone("22",Couleur.RED));
-		zones.add(new Zone("23",Couleur.GREEN));
-		zones.add(new Zone("24",Couleur.YELLOW));
+		zones.add(new Zone("01",Couleur.BLUE,16151,20265,hPlateau));
+		zones.add(new Zone("02",Couleur.RED,20521,16089,hPlateau));
+		zones.add(new Zone("03",Couleur.GREEN,11253,2646,hPlateau));
+		zones.add(new Zone("04",Couleur.YELLOW,13594,17787,hPlateau));
+		zones.add(new Zone("05",Couleur.BLUE,16151,15488,hPlateau));
+		zones.add(new Zone("06",Couleur.RED,19479,11691,hPlateau));
+		zones.add(new Zone("07",Couleur.GREEN,15651,1688,hPlateau));
+		zones.add(new Zone("08",Couleur.YELLOW,2694,16579,hPlateau));
+		zones.add(new Zone("09",Couleur.BLUE,10853,20265,hPlateau));
+		zones.add(new Zone("10",Couleur.RED,19479,6393,hPlateau));
+		zones.add(new Zone("11",Couleur.GREEN,5955,2646,hPlateau));
+		zones.add(new Zone("12",Couleur.YELLOW,2693,11291,hPlateau));
+		zones.add(new Zone("13",Couleur.BLUE,6455,21223,hPlateau));
+		zones.add(new Zone("14",Couleur.RED,14702,6393,hPlateau));
+		zones.add(new Zone("15",Couleur.GREEN,5172,14033,hPlateau));
+		zones.add(new Zone("16",Couleur.YELLOW,1651,6893,hPlateau));
+		zones.add(new Zone("17",Couleur.BLUE,17001,8949,hPlateau));
+		zones.add(new Zone("18",Couleur.RED,8512,5124,hPlateau));
+		zones.add(new Zone("19",Couleur.GREEN,5955,7423,hPlateau));
+		zones.add(new Zone("20",Couleur.YELLOW,7471,16589,hPlateau));
+		zones.add(new Zone("21",Couleur.BLUE,11053,13165,hPlateau));
+		zones.add(new Zone("22",Couleur.RED,13136,11466,hPlateau));
+		zones.add(new Zone("23",Couleur.GREEN,11053,9816,hPlateau));
+		zones.add(new Zone("24",Couleur.YELLOW,8970,11466,hPlateau));
 		return zones;
 	}
 	
-	private List<Passerelle> ajoutePasserelles() {
+	private List<Passerelle> ajoutePasserelles(int hPlateau) {
 		List<Passerelle> passerelles = new ArrayList<Passerelle>();
-		passerelles.add(new Passerelle(1));
-		passerelles.add(new Passerelle(2));
-		passerelles.add(new Passerelle(3));
-		passerelles.add(new Passerelle(4));
-		passerelles.add(new Passerelle(5));
-		passerelles.add(new Passerelle(6));
-		passerelles.add(new Passerelle(7));
-		passerelles.add(new Passerelle(8));
-		passerelles.add(new Passerelle(9));
-		passerelles.add(new Passerelle(10));
-		passerelles.add(new Passerelle(11));
-		passerelles.add(new Passerelle(12));
-		passerelles.add(new Passerelle(13));
-		passerelles.add(new Passerelle(14));
-		passerelles.add(new Passerelle(15));
-		passerelles.add(new Passerelle(16));
-		passerelles.add(new Passerelle(17));
-		passerelles.add(new Passerelle(18));
-		passerelles.add(new Passerelle(19));
-		passerelles.add(new Passerelle(20));
-		passerelles.add(new Passerelle(21));
-		passerelles.add(new Passerelle(22));
-		passerelles.add(new Passerelle(23));
-		passerelles.add(new Passerelle(24));
-		passerelles.add(new Passerelle(25));
-		passerelles.add(new Passerelle(26));
-		passerelles.add(new Passerelle(27));
-		passerelles.add(new Passerelle(28));
-		passerelles.add(new Passerelle(29));
-		passerelles.add(new Passerelle(30));
-		passerelles.add(new Passerelle(31));
-		passerelles.add(new Passerelle(32));
-		passerelles.add(new Passerelle(33));
-		passerelles.add(new Passerelle(34));
-		passerelles.add(new Passerelle(35));
-		passerelles.add(new Passerelle(36));
-		passerelles.add(new Passerelle(37));
-		passerelles.add(new Passerelle(38));
-		passerelles.add(new Passerelle(39));
-		passerelles.add(new Passerelle(40));
-		passerelles.add(new Passerelle(41));
-		passerelles.add(new Passerelle(42));
-		passerelles.add(new Passerelle(43));
-		passerelles.add(new Passerelle(44));
-		passerelles.add(new Passerelle(45));
-		passerelles.add(new Passerelle(46));
-		passerelles.add(new Passerelle(47));
-		passerelles.add(new Passerelle(48));
-		passerelles.add(new Passerelle(49));
-		passerelles.add(new Passerelle(50));
-		passerelles.add(new Passerelle(51));
-		passerelles.add(new Passerelle(52));
-		passerelles.add(new Passerelle(53));
-		passerelles.add(new Passerelle(54));
-		passerelles.add(new Passerelle(55));
-		passerelles.add(new Passerelle(56));
+		passerelles.add(new Passerelle(1,14289,20477,hPlateau));
+		passerelles.add(new Passerelle(2,19479,20688,hPlateau));
+		passerelles.add(new Passerelle(3,21216,19480,hPlateau));
+		passerelles.add(new Passerelle(4,20431,14033,hPlateau));
+		passerelles.add(new Passerelle(5,20172,9207,hPlateau));
+		passerelles.add(new Passerelle(6,20431,4245,hPlateau));
+		passerelles.add(new Passerelle(7,19080,2549,hPlateau));
+		passerelles.add(new Passerelle(8,14178,2409,hPlateau));
+		passerelles.add(new Passerelle(9,9207,2763,hPlateau));
+		passerelles.add(new Passerelle(10,4017,2552,hPlateau));
+		passerelles.add(new Passerelle(11,2280,3760,hPlateau));
+		passerelles.add(new Passerelle(12,3039,9296,hPlateau));
+		passerelles.add(new Passerelle(13,3298,14122,hPlateau));
+		passerelles.add(new Passerelle(14,3039,19084,hPlateau));
+		passerelles.add(new Passerelle(15,4390,20780,hPlateau));
+		passerelles.add(new Passerelle(16,9318,20831,hPlateau));
+		passerelles.add(new Passerelle(17,4730,18692,hPlateau));
+		passerelles.add(new Passerelle(18,6469,17886,hPlateau));
+		passerelles.add(new Passerelle(19,8970,18302,hPlateau));
+		passerelles.add(new Passerelle(20,11548,17999,hPlateau));
+		passerelles.add(new Passerelle(21,16500,17797,hPlateau));
+		passerelles.add(new Passerelle(22,18786,18695,hPlateau));
+		passerelles.add(new Passerelle(23,17887,17394,hPlateau));
+		passerelles.add(new Passerelle(24,18188,13944,hPlateau));
+		passerelles.add(new Passerelle(25,17877,11549,hPlateau));
+		passerelles.add(new Passerelle(26,17955,7254,hPlateau));
+		passerelles.add(new Passerelle(27,18740,4637,hPlateau));
+		passerelles.add(new Passerelle(28,17001,5443,hPlateau));
+		passerelles.add(new Passerelle(29,14526,4938,hPlateau));
+		passerelles.add(new Passerelle(30,11948,5241,hPlateau));
+		passerelles.add(new Passerelle(31,6996,5443,hPlateau));
+		passerelles.add(new Passerelle(32,4710,4545,hPlateau));
+		passerelles.add(new Passerelle(33,5609,5846,hPlateau));
+		passerelles.add(new Passerelle(34,5282,9385,hPlateau));
+		passerelles.add(new Passerelle(35,5583,11780,hPlateau));
+		passerelles.add(new Passerelle(36,5515,16075,hPlateau));
+		passerelles.add(new Passerelle(37,10560,15911,hPlateau));
+		passerelles.add(new Passerelle(38,12443,16791,hPlateau));
+		passerelles.add(new Passerelle(39,13336,15304,hPlateau));
+		passerelles.add(new Passerelle(40,16393,12819,hPlateau));
+		passerelles.add(new Passerelle(41,15907,11466,hPlateau));
+		passerelles.add(new Passerelle(42,15907,9863,hPlateau));
+		passerelles.add(new Passerelle(43,12936,7329,hPlateau));
+		passerelles.add(new Passerelle(44,11053,6449,hPlateau));
+		passerelles.add(new Passerelle(45,10160,7936,hPlateau));
+		passerelles.add(new Passerelle(46,7077,10510,hPlateau));
+		passerelles.add(new Passerelle(47,7563,11863,hPlateau));
+		passerelles.add(new Passerelle(48,7563,13466,hPlateau));
+		passerelles.add(new Passerelle(49,8971,13769,hPlateau));
+		passerelles.add(new Passerelle(50,14590,13512,hPlateau));
+		passerelles.add(new Passerelle(51,14525,9471,hPlateau));
+		passerelles.add(new Passerelle(52,8880,9817,hPlateau));
+		passerelles.add(new Passerelle(53,11253,11203,hPlateau));
+		passerelles.add(new Passerelle(54,11255,12210,hPlateau));
+		passerelles.add(new Passerelle(55,12241,12210,hPlateau));
+		passerelles.add(new Passerelle(56,12241,11203,hPlateau));
 		return passerelles;
 	}
 	

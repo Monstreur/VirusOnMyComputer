@@ -26,7 +26,8 @@ public class FenetreJeu extends BasicGame {
     	this.container = container;
 		container.setShowFPS(false);
 		this.timepast=0;
-		this.jeu = new Jeu();
+		this.jeu = new Jeu(container.getHeight());
+		System.out.println(this.jeu.getPlateau());
 	}
 
     @Override
@@ -56,6 +57,8 @@ public class FenetreJeu extends BasicGame {
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
     	this.mouseX=newx;
     	this.mouseY=newy;
+    	
+    	this.jeu.getPlateau().mouseMoved(oldx, oldy, newx, newy);
     }
     
     @Override

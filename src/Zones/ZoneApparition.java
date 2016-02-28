@@ -3,20 +3,20 @@ package Zones;
 import java.util.ArrayList;
 import java.util.List;
 
+import autres.CarreArea;
 import autres.Couleur;
 
-public enum ZoneApparition implements ZoneMarchable {
-	BLUE(Couleur.BLUE),
-	RED(Couleur.RED),
-	GREEN(Couleur.GREEN),
-	YELLOW(Couleur.YELLOW);
+public class ZoneApparition implements ZoneMarchable {
 	
 	private Couleur color;
 	private List<ZoneMarchable> zoneMarchables;
+	private CarreArea button;
 	
-	ZoneApparition(Couleur color){
+	public ZoneApparition(Couleur color, int x, int y, int hPlateau){
 		this.color = color;
 		this.zoneMarchables = new ArrayList<ZoneMarchable>();
+		float scale = ((float)hPlateau/(float)24187);
+		this.button = new CarreArea((int)(x*scale),(int)(y*scale),(int)(19465*scale),(int)(1181*scale));
 	}
 
 	public String toString(){
@@ -35,5 +35,14 @@ public enum ZoneApparition implements ZoneMarchable {
 	
 	public Couleur getColor(){
 		return this.color;
+	}
+
+	@Override
+	public void setButtonHover(boolean hover){
+		this.button.setHover(hover);
+	}
+	@Override
+	public CarreArea getCarreArea() {
+		return this.button;
 	}
 }
