@@ -13,6 +13,7 @@ import Zones.Passerelle;
 import Zones.Zone;
 import Zones.ZoneMarchable;
 import autres.Couleur;
+import intelligenceArtificielle.IAZone;
 import intelligenceArtificielle.IntelligenceArtificielle;
 
 public class Jeu {
@@ -37,10 +38,11 @@ public class Jeu {
 		this.joueurs.getJoueur(Couleur.GREEN).setCaseActuelle(this.plateau.getZoneApparition(Couleur.GREEN));
 		this.joueurs.getJoueur(Couleur.YELLOW).setCaseActuelle(this.plateau.getZoneApparition(Couleur.YELLOW));
 		
-		this.joueurActuel = Couleur.BLUE;
-		
 		this.ia = new IntelligenceArtificielle();
 		this.nbDeplacementMaxJoueur = 3;
+
+		this.joueurActuel = Couleur.BLUE;
+		this.joueurs.getJoueur(this.joueurActuel).setStockDeplacement(this.nbDeplacementMaxJoueur);
 	}
 	
 	public List<ZoneMarchable> deplacementPossibleJoueur(Joueur joueur){
@@ -55,9 +57,11 @@ public class Jeu {
 					for (ZoneMarchable zm : zmsearch.getZoneMarchables()) {
 						if(!zms.contains(zm) && !zm.equals(caseStart)){
 							if(!zonetoSearch.contains(zm) && !zoneaddSearch.contains(zm)){
-								zoneaddSearch.add(zm);
+								if((zm instanceof Zone && joueur.canAccesTo(((Zone)zm).getColor())) || !(zm instanceof Zone))
+									zoneaddSearch.add(zm);
 							}
-							zms.add(zm);
+							if((zm instanceof Zone && joueur.canAccesTo(((Zone)zm).getColor())) || !(zm instanceof Zone))
+								zms.add(zm);
 						}
 					}
 				}
@@ -70,7 +74,7 @@ public class Jeu {
 			}
 			return zms;
 		}
-		return null;
+		return new ArrayList<ZoneMarchable>();
 	}
 	public List<ZoneMarchable> deplacementPossibleMP(Couleur colorJoueur){
 		ZoneMarchable caseStart = this.joueurs.getJoueur(colorJoueur).getCaseActuelle();
@@ -100,56 +104,31 @@ public class Jeu {
 	}
 	
 	
-	private ZoneMarchable deplacementJoueur(Joueur joueur,int nbDeplacement) {
-		System.out.println("Vous êtes actuellement sur la case "+joueur.getCaseActuelle());
-		List<ZoneMarchable> deplacements = this.deplacementPossibleJoueur(joueur);
-		ZoneMarchable zoneNew = null;
-		if(deplacements==null)
-			System.out.println("Impossible, cete case est trop loin");
-		else{
-			/*
-			System.out.println("\nLes zones où vous pouvez aller sont:");
-			for (ZoneMarchable zm : deplacements) {
-				System.out.println("\t"+zm);
-			}
-			System.out.println("\nLes zones où votre MicroProgramme peut aller sont:");
-			for (ZoneMarchable zm : this.deplacementPossibleMP(this.joueurActuel)) {
-				System.out.println("\t"+zm);
-			}
-			*/
-			zoneNew = deplacements.get(0);
-			return zoneNew;
-		}
-		return null;
-	}
-
-	private void explore(Joueur joueur) {
-		ZoneMarchable caseActuelle = joueur.getCaseActuelle();
-		System.out.println(ia.getInfosOnCase(joueur.getColor(), ((Zone)caseActuelle).getNum()));
-	}
-	
-	public void jouerTour(){
-		Joueur joueur = this.joueurs.getJoueur(joueurActuel);
-		joueur.setStockDeplacement(this.nbDeplacementMaxJoueur);
-		
-		ZoneMarchable zm = this.deplacementJoueur(joueur, this.nbDeplacementMaxJoueur);
+	public void deplacementJoueur(Joueur joueur,ZoneMarchable zm) {
 		joueur.removeDeplacement(this.nbDeplacementMaxJoueur);
 		joueur.setCaseActuelle(zm);
 		System.out.println("Vous êtes maintenant sur la case "+joueur.getCaseActuelle());
-		if(joueur.getCaseActuelle() instanceof Zone)
-			this.explore(joueur);
 	}
 
-	public void jouerRound(){
-		this.jouerTour();
-		this.joueurActuel=Couleur.RED;
-		this.jouerTour();
-		this.joueurActuel=Couleur.GREEN;
-		this.jouerTour();
-		this.joueurActuel=Couleur.YELLOW;
-		this.jouerTour();
-		this.joueurActuel=Couleur.BLUE;
-		
+	public void explore() {
+		Joueur joueur = this.joueurs.getJoueur(joueurActuel);
+		Zone caseActuelle = (Zone)joueur.getCaseActuelle();
+		IAZone iazone = ia.getCase(joueurActuel, caseActuelle.getNum());
+		System.out.println(caseActuelle+" : "+ia.getInfosOnCase(iazone));
+		ia.doActionForCase(joueur, iazone);
+	}
+
+	public void joueurSuivant(){
+		if(this.joueurActuel.name().equals("BLUE"))
+			this.joueurActuel=Couleur.RED;
+		else if(this.joueurActuel.name().equals("RED"))
+			this.joueurActuel=Couleur.GREEN;
+		else if(this.joueurActuel.name().equals("GREEN"))
+			this.joueurActuel=Couleur.YELLOW;
+		else if(this.joueurActuel.name().equals("YELLOW"))
+			this.joueurActuel=Couleur.BLUE;
+
+		this.joueurs.getJoueur(this.joueurActuel).setStockDeplacement(this.nbDeplacementMaxJoueur);
 	}
 	
     public void render(GameContainer container, Graphics g) throws SlickException {
@@ -169,43 +148,13 @@ public class Jeu {
 		return this.plateau;
 	}
 
-	/*
-	public static void main(String[] args){
-		Jeu j = new Jeu(1024);
-		j.jouerRound();
-		j.jouerRound();
-		System.out.print(j);
-		
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-		
-		j.joueurs.getJoueur(Couleur.BLUE).setCaseActuelle(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables().get(0));
-
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-
-		j.joueurs.getJoueur(Couleur.BLUE).setCaseActuelle(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables().get(0));
-		
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-
-		j.joueurs.getJoueur(Couleur.BLUE).setCaseActuelle(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables().get(1));
-		
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-
-		j.joueurs.getJoueur(Couleur.BLUE).setCaseActuelle(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables().get(1));
-		
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-
-		j.joueurs.getJoueur(Couleur.BLUE).setCaseActuelle(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables().get(0));
-		
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle());
-		System.out.println(j.joueurs.getJoueur(Couleur.BLUE).getCaseActuelle().getZoneMarchables());
-		
+	public ListeJoueurs getListeJoueurs() {
+		return this.joueurs;
 	}
-	*/
+
+	public Couleur getJoueurActuel() {
+		return this.joueurActuel;
+	}
 	
 	
 }

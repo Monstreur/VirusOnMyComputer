@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Joueurs.Joueur;
 import autres.Couleur;
 import autres.ManipulationNombre;
 import jeu.Plateau;
@@ -22,25 +23,31 @@ public class IntelligenceArtificielle {
 		this.ListZoneForGreen = this.createListIAZoneFor(Couleur.GREEN);
 		this.ListZoneForYellow = this.createListIAZoneFor(Couleur.YELLOW);
 	}
-	
-	public String getInfosOnCase(Couleur colorJoueur, int numCase){
+	public IAZone getCase(Couleur colorJoueur, int numCase){
 		List<IAZone> list = null;
-		if(colorJoueur.toString().equals("BLEU"))
+		if(colorJoueur.name().equals("BLUE"))
 			list=this.ListZoneForBlue;
-		else if(colorJoueur.toString().equals("RED"))
+		else if(colorJoueur.name().equals("RED"))
 			list=this.ListZoneForRed;
-		else if(colorJoueur.toString().equals("GREEN"))
+		else if(colorJoueur.name().equals("GREEN"))
 			list=this.ListZoneForGreen;
-		else if(colorJoueur.toString().equals("YELLOW"))
+		else if(colorJoueur.name().equals("YELLOW"))
 			list=this.ListZoneForYellow;
 		else
 			list = new ArrayList<IAZone>();
+		
 		for (IAZone iaZone : list) {
 			if(iaZone.getNumZone()==numCase){
-				return getMessageForIAZoneCode(iaZone.getCodeZone());
+				return iaZone;
 			}
 		}
-		return "Il n'y a rien ici";
+		IAZone iazone = new IAZone(numCase, IAZoneCode.Rien);
+		list.add(iazone);
+		return iazone;
+	}
+	
+	public String getInfosOnCase(IAZone iazone){
+		return getMessageForIAZoneCode(iazone.getCodeZone());
 	}
 
 	private String getMessageForIAZoneCode(int codeZone) {
@@ -65,6 +72,37 @@ public class IntelligenceArtificielle {
 			return "Il n'y a rien ici";
 		}
 	}
+
+public void doActionForCase(Joueur j, IAZone iazone) {
+		switch (iazone.getCodeZone()) {
+		case 1:
+			j.setParefeu(true);
+			break;
+		case 2:
+			j.setDecodeur(true);
+			break;
+		case 3:
+			j.setZoneQuarantaine(true);
+			break;
+		case 4:
+			j.setCodeAccesBlue(true);
+			break;
+		case 5:
+			j.setCodeAccesRed(true);
+			break;
+		case 6:
+			j.setCodeAccesGreen(true);;
+			break;
+		case 7:
+			j.setCodeAccesYellow(true);
+			break;
+		case 8:
+			System.out.println("PIEGE A FAIRE");
+			break;
+		default:
+			break;
+		}
+	}
 	
 	/*
 	public List<IAZone> getListZoneForBlue() {
@@ -79,10 +117,11 @@ public class IntelligenceArtificielle {
 	public List<IAZone> getListZoneForYellow() {
 		return ListZoneForYellow;
 	}
+	*/
+	
 	public int getVirusIsIn() {
 		return VirusIsIn;
 	}
-	*/
 
 	private List<IAZone> createListIAZoneFor(Couleur color) {
 		List<Integer> numOccuper = new ArrayList<Integer>();
@@ -121,7 +160,7 @@ public class IntelligenceArtificielle {
 		
 		boolean find=false;
 		for (Couleur c : couleurOccuper) {
-			if(Couleur.YELLOW.toString().equals(c.toString()))
+			if(Couleur.YELLOW.name().equals(c.toString()))
 				find=true;
 		}
 		if(!find)
@@ -142,11 +181,15 @@ public class IntelligenceArtificielle {
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(3));
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
-
-		list.add(new IAZone(numOccuper.get(3),IAZoneCode.CodeAccesBlue));
-		list.add(new IAZone(numOccuper.get(4),IAZoneCode.CodeAccesRed));
-		list.add(new IAZone(numOccuper.get(5),IAZoneCode.CodeAccesGreen));
-		list.add(new IAZone(numOccuper.get(6),IAZoneCode.CodeAccesYellow));
+		
+		if(!color.name().equals("BLUE"))
+			list.add(new IAZone(numOccuper.get(3),IAZoneCode.CodeAccesBlue));
+		if(!color.name().equals("RED"))
+			list.add(new IAZone(numOccuper.get(4),IAZoneCode.CodeAccesRed));
+		if(!color.name().equals("GREEN"))
+			list.add(new IAZone(numOccuper.get(5),IAZoneCode.CodeAccesGreen));
+		if(!color.name().equals("YELLOW"))
+			list.add(new IAZone(numOccuper.get(6),IAZoneCode.CodeAccesYellow));
 		
 		couleurOccuper = new ArrayList<Couleur>();
 		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));

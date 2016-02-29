@@ -54,6 +54,7 @@ public class Plateau {
 		this.img.draw(0, 0, container.getHeight(), container.getHeight());
 		
 
+		/*
 		for (ZoneMarchable zm : zoneMarchables) {
 			CarreArea tmp = zm.getCarreArea();
 			if(tmp.isHover())
@@ -64,7 +65,7 @@ public class Plateau {
 			if(tmp.isHover())
 				za.drawHL();
 		}
-		
+		*/
 		
 	}
 
@@ -95,6 +96,22 @@ public class Plateau {
 			}
 		}
     }
+	
+	public ZoneMarchable mousePressed(int button, int x, int y){
+		for (ZoneMarchable zm : zoneMarchables) {
+			if(zm.getCarreArea().contain(x, y)){
+				zm.setButtonHover(false);
+				return zm;
+			}
+		}
+		for (ZoneApparition za : zoneApparitions) {
+			if(za.getCarreArea().contain(x, y)){
+				za.setButtonHover(false);
+				return za;
+			}
+		}
+		return null;
+	}
 	
 	public static List<Integer> getZoneNums(Couleur color){
 		List<Integer> ret = new ArrayList<Integer>();
