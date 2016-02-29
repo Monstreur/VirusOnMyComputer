@@ -52,6 +52,20 @@ public class Plateau {
 	
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		this.img.draw(0, 0, container.getHeight(), container.getHeight());
+		
+
+		for (ZoneMarchable zm : zoneMarchables) {
+			CarreArea tmp = zm.getCarreArea();
+			if(tmp.isHover())
+				zm.drawHL();
+		}
+		for (ZoneApparition za : zoneApparitions) {
+			CarreArea tmp = za.getCarreArea();
+			if(tmp.isHover())
+				za.drawHL();
+		}
+		
+		
 	}
 
 	public ZoneMarchable getZoneApparition(Couleur color) {
@@ -64,17 +78,21 @@ public class Plateau {
 	}
 	
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-    	for (ZoneMarchable zm : zoneMarchables) {
-			if(zm.getCarreArea().contain(newx, newy))
-				System.out.println("In : "+zm);
-		}
-    }
-	
-	public void draw(Graphics g) {
 		for (ZoneMarchable zm : zoneMarchables) {
-			CarreArea tmp = zm.getCarreArea();
-			if(tmp.isHover())
-				tmp.draw(g);
+			if(zm.getCarreArea().contain(newx, newy))
+				zm.setButtonHover(true);
+			else{
+				if(zm.getCarreArea().isHover())
+					zm.setButtonHover(false);
+			}
+		}
+		for (ZoneApparition za : zoneApparitions) {
+			if(za.getCarreArea().contain(newx, newy))
+				za.setButtonHover(true);
+			else{
+				if(za.getCarreArea().isHover())
+					za.setButtonHover(false);
+			}
 		}
     }
 	

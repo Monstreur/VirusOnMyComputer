@@ -154,7 +154,6 @@ public class Jeu {
 	
     public void render(GameContainer container, Graphics g) throws SlickException {
     	this.plateau.render(container, g);
-    	this.plateau.draw(g);
     }
 	
 	public String toString(){

@@ -1,5 +1,6 @@
 package autres;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 public class CarreArea {
@@ -45,7 +46,9 @@ public class CarreArea {
 	}
 	
 	public void draw(Graphics g){
+		g.setColor(Color.white);
 		g.drawRect(x, y, width, height);
+		System.out.println(this);
 	}
 	
 }

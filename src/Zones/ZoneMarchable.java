@@ -15,5 +15,7 @@ public interface ZoneMarchable {
 	public CarreArea getCarreArea();
 	
 	public void setButtonHover(boolean hover);
+
+	public void drawHL();
 	
 }
