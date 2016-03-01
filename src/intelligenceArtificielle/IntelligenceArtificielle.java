@@ -22,7 +22,17 @@ public class IntelligenceArtificielle {
 		this.ListZoneForRed = this.createListIAZoneFor(Couleur.RED);
 		this.ListZoneForGreen = this.createListIAZoneFor(Couleur.GREEN);
 		this.ListZoneForYellow = this.createListIAZoneFor(Couleur.YELLOW);
+
+		System.out.println(VirusIsIn);
+		System.out.println(ListZoneForBlue);
+
+		System.out.println(ListZoneForRed);
+
+		System.out.println(ListZoneForGreen);
+
+		System.out.println(ListZoneForYellow);
 	}
+	
 	public IAZone getCase(Couleur colorJoueur, int numCase){
 		List<IAZone> list = null;
 		if(colorJoueur.name().equals("BLUE"))
@@ -43,6 +53,7 @@ public class IntelligenceArtificielle {
 		}
 		IAZone iazone = new IAZone(numCase, IAZoneCode.Rien);
 		list.add(iazone);
+		
 		return iazone;
 	}
 	

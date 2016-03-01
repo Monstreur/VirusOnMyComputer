@@ -15,4 +15,7 @@ public class IAZone{
 	public int getCodeZone() {
 		return this.iaCode.getCode();
 	}
+	public String toString(){
+		return "("+this.numZone+" : "+this.iaCode.getCode()+")";
+	}
 }
