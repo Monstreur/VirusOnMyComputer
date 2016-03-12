@@ -109,12 +109,13 @@ public class Jeu {
 		System.out.println("Vous êtes maintenant sur la case "+joueur.getCaseActuelle());
 	}
 
-	public void explore() {
+	public String explore() {
 		Joueur joueur = this.joueurs.getJoueur(joueurActuel);
 		Zone caseActuelle = (Zone)joueur.getCaseActuelle();
 		IAZone iazone = ia.getCase(joueurActuel, caseActuelle.getNum());
 		System.out.println(caseActuelle+" : "+ia.getInfosOnCase(iazone));
 		ia.doActionForCase(joueur, iazone);
+		return ia.getInfosOnCase(iazone);
 	}
 
 	public void joueurSuivant(){

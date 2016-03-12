@@ -488,8 +488,9 @@ public class Plateau {
 		
 		passerelles.get(35).addZoneMarchable(zones.get(14));
 		passerelles.get(35).addZoneMarchable(zones.get(19));
-		
+
 		passerelles.get(36).addZoneMarchable(zones.get(19));
+		passerelles.get(36).addZoneMarchable(passerelles.get(18));
 		passerelles.get(36).addZoneMarchable(passerelles.get(37));
 		passerelles.get(36).addZoneMarchable(passerelles.get(48));
 		

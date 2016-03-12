@@ -4,6 +4,7 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Cursor;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -14,6 +15,7 @@ import org.newdawn.slick.SlickException;
 import Joueurs.Joueur;
 import Zones.Zone;
 import Zones.ZoneMarchable;
+import jeu.Hud;
 import jeu.Jeu;
 import autres.Touche;
 
@@ -21,6 +23,7 @@ public class FenetreJeu extends BasicGame {
     private GameContainer container;
     private int timepast;
     private Jeu jeu;
+    private Hud hud;
     private int mouseX;
     private int mouseY;
     private Touche[] touches;
@@ -36,7 +39,6 @@ public class FenetreJeu extends BasicGame {
 		container.setShowFPS(false);
 		this.timepast=0;
 		this.jeu = new Jeu(container.getHeight());
-		//System.out.println(this.jeu.getPlateau());
 		
 		this.touches=new Touche[3];
 		this.touches[Touche.Attaquer]= new Touche(Input.KEY_TAB);
@@ -44,7 +46,9 @@ public class FenetreJeu extends BasicGame {
 		this.touches[Touche.Passer]= new Touche(Input.KEY_SPACE);
 		
 		this.deplacementPossible = new ArrayList<ZoneMarchable>();
-	}
+		
+		this.hud = new Hud(container.getHeight(), 0,container.getWidth()-container.getHeight(),container.getHeight());
+    }
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
@@ -53,6 +57,7 @@ public class FenetreJeu extends BasicGame {
     	for (ZoneMarchable zm : deplacementPossible) {
 			zm.drawHL();
 		}
+    	this.hud.render(g, container.getHeight(), 0);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class FenetreJeu extends BasicGame {
     	this.deplacementPossible = this.jeu.deplacementPossibleJoueur(joueur);
     	
     	if(this.touches[Touche.Explorer].is_appuie() && joueur.getCaseActuelle() instanceof Zone){
-    		this.jeu.explore();
+    		this.hud.setNotification(this.jeu.explore(), this.timepast);
     		this.touches[Touche.Explorer].relache();
     	}
     	if(this.touches[Touche.Passer].is_appuie()){
@@ -73,6 +78,9 @@ public class FenetreJeu extends BasicGame {
     		this.touches[Touche.Passer].relache();
     	}
     	
+    	if(this.timepast-this.hud.getTime()>2000){
+    		this.hud.setNotification("", this.timepast);
+    	}
     }
     
     public void keyPressed(int key, char c){
@@ -83,14 +91,16 @@ public class FenetreJeu extends BasicGame {
     		this.touches[Touche.Explorer].appuie(this.timepast);
     	if (this.touches[Touche.Passer].getKey() == key)
     		this.touches[Touche.Passer].appuie(this.timepast);
-	}
+	
+    	this.hud.keyPressed(key, c);
+    }
 
     @Override
     public void keyReleased(int key, char c) {
     	if (Input.KEY_F == key) {
             container.exit();
         }
-
+    	
     	if (this.touches[Touche.Attaquer].getKey() == key)
     		this.touches[Touche.Attaquer].relache();
     	if (this.touches[Touche.Explorer].getKey() == key)
@@ -106,6 +116,7 @@ public class FenetreJeu extends BasicGame {
     	this.mouseY=newy;
     	
     	this.jeu.getPlateau().mouseMoved(oldx, oldy, newx, newy);
+    	this.hud.mouseMoved(oldx, oldy, newx, newy);
     }
     
     @Override
@@ -114,6 +125,12 @@ public class FenetreJeu extends BasicGame {
     	if(zm!=null && this.deplacementPossible.contains(zm)){
     		this.jeu.deplacementJoueur(this.jeu.getListeJoueurs().getJoueur(this.jeu.getJoueurActuel()), zm);
     	}
+    	this.hud.mousePressed(button, x, y);
+    }
+    
+    @Override
+    public void mouseWheelMoved(int change) {
+    	this.hud.mouseWheelMoved(change);
     }
     
     public static void main(String[] args) throws SlickException {
