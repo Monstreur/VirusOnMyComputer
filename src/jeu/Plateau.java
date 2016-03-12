@@ -1,7 +1,6 @@
 package jeu;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
@@ -13,7 +12,6 @@ import Zones.Passerelle;
 import Zones.Zone;
 import Zones.ZoneApparition;
 import Zones.ZoneMarchable;
-import autres.CarreArea;
 import autres.Couleur;
 
 public class Plateau {
@@ -116,14 +114,6 @@ public class Plateau {
 	public static List<Integer> getZoneNums(Couleur color){
 		List<Integer> ret = new ArrayList<Integer>();
 		if(color.toString().equals("BLUE")){
-			ret.add(0);
-			ret.add(4);
-			ret.add(8);
-			ret.add(12);
-			ret.add(16);
-			ret.add(20);
-		}
-		else if(color.toString().equals("RED")){
 			ret.add(1);
 			ret.add(5);
 			ret.add(9);
@@ -131,7 +121,7 @@ public class Plateau {
 			ret.add(17);
 			ret.add(21);
 		}
-		else if(color.toString().equals("GREEN")){
+		else if(color.toString().equals("RED")){
 			ret.add(2);
 			ret.add(6);
 			ret.add(10);
@@ -139,13 +129,21 @@ public class Plateau {
 			ret.add(18);
 			ret.add(22);
 		}
-		else if(color.toString().equals("YELLOW")){
+		else if(color.toString().equals("GREEN")){
 			ret.add(3);
 			ret.add(7);
 			ret.add(11);
 			ret.add(15);
 			ret.add(19);
 			ret.add(23);
+		}
+		else if(color.toString().equals("YELLOW")){
+			ret.add(4);
+			ret.add(8);
+			ret.add(12);
+			ret.add(16);
+			ret.add(20);
+			ret.add(24);
 		}
 		return ret;
 	}
@@ -395,6 +393,7 @@ public class Plateau {
 		passerelles.get(6).addZoneMarchable(passerelles.get(5));
 
 		passerelles.get(7).addZoneMarchable(zones.get(2));
+		passerelles.get(7).addZoneMarchable(zones.get(6));
 		
 		passerelles.get(8).addZoneMarchable(zones.get(2));
 		passerelles.get(8).addZoneMarchable(zones.get(10));
@@ -580,5 +579,40 @@ public class Plateau {
 		passerelles.get(55).addZoneMarchable(zones.get(22));
 		passerelles.get(55).addZoneMarchable(passerelles.get(52));
 		passerelles.get(55).addZoneMarchable(passerelles.get(54));
+	}
+
+	public static Couleur getColorOfZone(int virusIsIn) {
+		switch(virusIsIn){
+			case 1:
+			case 5:
+			case 9:
+			case 13:
+			case 17:
+			case 21:
+				return Couleur.BLUE;
+			case 2:
+			case 6:
+			case 10:
+			case 14:
+			case 18:
+			case 22:
+				return Couleur.RED;
+			case 3:
+			case 7:
+			case 11:
+			case 15:
+			case 19:
+			case 23:
+				return Couleur.GREEN;
+			case 4:
+			case 8:
+			case 12:
+			case 16:
+			case 20:
+			case 24:
+				return Couleur.YELLOW;
+		}
+		return null;
+		
 	}
 }

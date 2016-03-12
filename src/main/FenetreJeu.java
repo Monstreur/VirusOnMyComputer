@@ -36,7 +36,7 @@ public class FenetreJeu extends BasicGame {
 		container.setShowFPS(false);
 		this.timepast=0;
 		this.jeu = new Jeu(container.getHeight());
-		System.out.println(this.jeu.getPlateau());
+		//System.out.println(this.jeu.getPlateau());
 		
 		this.touches=new Touche[3];
 		this.touches[Touche.Attaquer]= new Touche(Input.KEY_TAB);

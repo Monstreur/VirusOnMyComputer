@@ -2,7 +2,6 @@ package intelligenceArtificielle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import Joueurs.Joueur;
 import autres.Couleur;
@@ -17,13 +16,14 @@ public class IntelligenceArtificielle {
 	private int VirusIsIn; // num de la Zone où est le virus
 	
 	public IntelligenceArtificielle(){
-		this.VirusIsIn = ManipulationNombre.randomRange(0, 23);
-		this.ListZoneForBlue = this.createListIAZoneFor(Couleur.BLUE);
-		this.ListZoneForRed = this.createListIAZoneFor(Couleur.RED);
-		this.ListZoneForGreen = this.createListIAZoneFor(Couleur.GREEN);
-		this.ListZoneForYellow = this.createListIAZoneFor(Couleur.YELLOW);
+		this.VirusIsIn = ManipulationNombre.randomRange(1,24);
+		this.ListZoneForBlue = this.createListIAZone(Couleur.BLUE);
+		this.ListZoneForRed = this.createListIAZone(Couleur.RED);
+		this.ListZoneForGreen = this.createListIAZone(Couleur.GREEN);
+		this.ListZoneForYellow = this.createListIAZone(Couleur.YELLOW);
 
 		System.out.println(VirusIsIn);
+		
 		System.out.println(ListZoneForBlue);
 
 		System.out.println(ListZoneForRed);
@@ -134,7 +134,8 @@ public void doActionForCase(Joueur j, IAZone iazone) {
 		return VirusIsIn;
 	}
 
-	private List<IAZone> createListIAZoneFor(Couleur color) {
+
+	private List<IAZone> createListIAZone(Couleur color) {
 		List<Integer> numOccuper = new ArrayList<Integer>();
 		List<Integer> numAutoriser = new ArrayList<Integer>();
 		List<Couleur> couleurOccuper = new ArrayList<Couleur>();
@@ -154,36 +155,11 @@ public void doActionForCase(Joueur j, IAZone iazone) {
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(3));
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 
-		list.add(new IAZone(numOccuper.get(0),IAZoneCode.Decodeur));
 		list.add(new IAZone(numOccuper.get(1),IAZoneCode.Parefeu));
-		list.add(new IAZone(numOccuper.get(2),IAZoneCode.ZoneQuarantaine));
+		list.add(new IAZone(numOccuper.get(2),IAZoneCode.Decodeur));
+		list.add(new IAZone(numOccuper.get(3),IAZoneCode.ZoneQuarantaine));
 		
-		couleurOccuper = new ArrayList<Couleur>();
-		couleurOccuper.add(Couleur.BLUE);
-		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
-		
-		couleurOccuper.remove(0);
-		couleurOccuper.add(Couleur.RED);
-		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
-		
-		couleurOccuper.remove(1);
-		couleurOccuper.add(Couleur.GREEN);
-		
-		boolean find=false;
-		for (Couleur c : couleurOccuper) {
-			if(Couleur.YELLOW.name().equals(c.toString()))
-				find=true;
-		}
-		if(!find)
-			couleurOccuper.add(Couleur.YELLOW);
-		else
-			couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
-
-		couleurOccuper.remove(2);
-		couleurOccuper.add(Couleur.YELLOW);
-		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
-		
-
+		couleurOccuper = Couleur.CheminCouleurForCodeAccess();
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(0));
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(1));
@@ -193,24 +169,18 @@ public void doActionForCase(Joueur j, IAZone iazone) {
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(3));
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 		
-		if(!color.name().equals("BLUE"))
-			list.add(new IAZone(numOccuper.get(3),IAZoneCode.CodeAccesBlue));
-		if(!color.name().equals("RED"))
-			list.add(new IAZone(numOccuper.get(4),IAZoneCode.CodeAccesRed));
-		if(!color.name().equals("GREEN"))
-			list.add(new IAZone(numOccuper.get(5),IAZoneCode.CodeAccesGreen));
-		if(!color.name().equals("YELLOW"))
-			list.add(new IAZone(numOccuper.get(6),IAZoneCode.CodeAccesYellow));
+		list.add(new IAZone(numOccuper.get(4),IAZoneCode.CodeAccesBlue));
+		list.add(new IAZone(numOccuper.get(5),IAZoneCode.CodeAccesRed));
+		list.add(new IAZone(numOccuper.get(6),IAZoneCode.CodeAccesGreen));
+		list.add(new IAZone(numOccuper.get(7),IAZoneCode.CodeAccesYellow));
+		
 		
 		couleurOccuper = new ArrayList<Couleur>();
-		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
+		couleurOccuper.add(Plateau.getColorOfZone(this.VirusIsIn));
 		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
 		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
 		couleurOccuper.add(Couleur.RandomColor(couleurOccuper));
 		
-
-		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(0));
-		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(1));
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(2));
@@ -218,10 +188,10 @@ public void doActionForCase(Joueur j, IAZone iazone) {
 		numAutoriser = Plateau.getZoneNums(couleurOccuper.get(3));
 		numOccuper.add(ManipulationNombre.randomIn(numAutoriser, numOccuper));
 
-		list.add(new IAZone(numOccuper.get(7),IAZoneCode.Trap));
 		list.add(new IAZone(numOccuper.get(8),IAZoneCode.Trap));
 		list.add(new IAZone(numOccuper.get(9),IAZoneCode.Trap));
 		list.add(new IAZone(numOccuper.get(10),IAZoneCode.Trap));
+		list.add(new IAZone(numOccuper.get(0),IAZoneCode.Trap));
 		
 		return list;
 	}

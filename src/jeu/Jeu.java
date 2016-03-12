@@ -26,7 +26,6 @@ public class Jeu {
 	public Jeu(int hPlateau){
 		this.nbDeplacementMaxJoueur = 3;
 		this.plateau = new Plateau(hPlateau);
-		
 		this.joueurs = new ListeJoueurs();
 		this.joueurs.add(Joueur.BLUE);
 		this.joueurs.add(Joueur.RED);
