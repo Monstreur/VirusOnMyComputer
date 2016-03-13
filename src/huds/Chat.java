@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import autres.Couleur;
 import slickAdding.TextMultiLines;
 
 public class Chat {
@@ -20,6 +21,7 @@ public class Chat {
 	private int tailleTotal;
 	private ScrollPanel scroll;
 	private boolean hovered;
+	private List<Couleur> couleurs;
 	
 	public Chat(int x, int y, int width, int height, String prefixMessage){
 		this.x = x;
@@ -28,6 +30,7 @@ public class Chat {
 		this.height = height;
 		this.prefixMessage = prefixMessage;
 		this.messages = new ArrayList<String>();
+		this.couleurs = new ArrayList<Couleur>();
 		this.text = new InputText(x, y+height-35, width, 35, "Ecrire un message...");
 		this.scroll = new ScrollPanel(x+width-15, y, 15, height-this.text.getHeight());
 		this.yMessage=0;
@@ -35,7 +38,7 @@ public class Chat {
 		this.hovered=false;
 	}
 	
-	public void add(String message){
+	public void add(Couleur c, String message){
 		TextMultiLines tm = new TextMultiLines(prefixMessage+message, 20);
 		this.tailleTotal+=tm.getNbLines()*15;
 		System.out.println(yMessage+tailleTotal + " " + (height-this.text.getHeight()));
@@ -50,15 +53,19 @@ public class Chat {
 		System.out.println("height "+(height-this.text.getHeight()));
 		this.scroll.moveToEnd();
 		this.messages.add(message);
+		this.couleurs.add(c);
 	}
 	
 	public void renderMessage(Graphics g){
 		g.setColor(Color.white);
 		int cpt=0;
+		int cptc=0;
 		for (String m : messages) {
+			g.setColor(this.couleurs.get(cptc).getColor());
 			TextMultiLines tm = new TextMultiLines(prefixMessage+m, 20);
 			tm.render(g, x, y+(cpt*15)+yMessage);
 			cpt+=tm.getNbLines();
+			cptc++;
 		}
 		g.setColor(Color.black);
 		g.fillRect(x, 0, width, y);

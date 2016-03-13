@@ -120,5 +120,18 @@ public enum Joueur {
 				+ "["+codeAccesBlue+";"+codeAccesRed+";"+codeAccesGreen+";"+codeAccesYellow+"]"
 				+ "Case Actuelle: ["+caseActuelle+"]";
 	}
-	
+
+	public int howManyColorCanAcces() {
+		int cpt = 0;
+		if(codeAccesBlue)
+			cpt++;
+		if(codeAccesRed)
+			cpt++;
+		if(codeAccesGreen)
+			cpt++;
+		if(codeAccesYellow)
+			cpt++;
+		return cpt;
+			
+	}
 }

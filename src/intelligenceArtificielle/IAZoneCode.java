@@ -9,7 +9,8 @@ public enum IAZoneCode {
 	CodeAccesRed(5),
 	CodeAccesGreen(6),
 	CodeAccesYellow(7),
-	Trap(8);
+	Trap(8),
+	Virus(9);
 	
 	private int code;
 	
@@ -33,6 +34,7 @@ public enum IAZoneCode {
 			case 6: return "CV";
 			case 7: return "CJ";
 			case 8: return "Pi";
+			case 9: return "V";
 			default: return null;
 		}
 	}

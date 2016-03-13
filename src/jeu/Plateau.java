@@ -3,6 +3,7 @@ package jeu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -52,18 +53,11 @@ public class Plateau {
 		this.img.draw(0, 0, container.getHeight(), container.getHeight());
 		
 
-		/*
+		g.setColor(Color.white);
 		for (ZoneMarchable zm : zoneMarchables) {
-			CarreArea tmp = zm.getCarreArea();
-			if(tmp.isHover())
-				zm.drawHL();
+			if(zm instanceof Zone)
+				((Zone)zm).drawNum(g);
 		}
-		for (ZoneApparition za : zoneApparitions) {
-			CarreArea tmp = za.getCarreArea();
-			if(tmp.isHover())
-				za.drawHL();
-		}
-		*/
 		
 	}
 

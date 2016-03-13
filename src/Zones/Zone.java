@@ -3,6 +3,7 @@ package Zones;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -61,6 +62,10 @@ public class Zone implements ZoneMarchable{
 		int x = this.button.getX()+(this.button.getWidth()/2)-(w/2);
 		int y = this.button.getY()+(this.button.getHeight()/2)-(h/2);
 		this.highlight.draw(x,y,w,h);
+	}
+	
+	public void drawNum(Graphics g){
+		g.drawString(this.name, this.button.getX(), this.button.getY());
 	}
 	
 	@Override

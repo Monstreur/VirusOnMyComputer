@@ -6,10 +6,10 @@ import java.util.List;
 import org.newdawn.slick.Color;
 
 public enum Couleur {
-	BLUE ("BLUE",0,0,175),
-	RED ("RED",175,0,0),
-	GREEN ("GREEN",0,175,0),
-	YELLOW ("YELLOW",175,175,0);
+	BLUE ("BLUE",50,50,255),
+	RED ("RED",255,50,50),
+	GREEN ("GREEN",50,255,50),
+	YELLOW ("YELLOW",255,255,50);
 	
 	private String name;
 	private Color color;

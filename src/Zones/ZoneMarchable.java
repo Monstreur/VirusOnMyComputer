@@ -3,6 +3,7 @@ package Zones;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 
 import autres.CarreArea;
 

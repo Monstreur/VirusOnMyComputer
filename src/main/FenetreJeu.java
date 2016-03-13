@@ -19,6 +19,7 @@ import jeu.Hud;
 import jeu.Jeu;
 import autres.Touche;
 import intelligenceArtificielle.IAZone;
+import intelligenceArtificielle.IAZoneCode;
 
 public class FenetreJeu extends BasicGame {
     private GameContainer container;
@@ -70,12 +71,17 @@ public class FenetreJeu extends BasicGame {
     	this.deplacementPossible = this.jeu.deplacementPossibleJoueur(joueur);
     	
     	if(this.touches[Touche.Explorer].is_appuie() && joueur.getCaseActuelle() instanceof Zone){
-    		this.hud.setNotification(this.jeu.explore(), this.timepast);
+    		this.hud.setNotification(this.jeu.getJoueurActuel(),this.jeu.explore(), this.timepast);
     		this.touches[Touche.Explorer].relache();
-    		int numZone = ((Zone)this.jeu.getListeJoueurs().getJoueur(this.jeu.getJoueurActuel()).getCaseActuelle()).getNum();
+    		int numZone=0;
+    		if(joueur.getCaseActuelle() instanceof Zone)
+    			numZone = ((Zone)joueur.getCaseActuelle()).getNum();
     		IAZone iazone = this.jeu.getIA().getCase(this.jeu.getJoueurActuel(), numZone);
     		if(iazone.getCodeNum()!=0){
-    			this.hud.setDecouverte(numZone, iazone.getCodeZone());
+    			if(iazone.getCodeNum()==8 && numZone==this.jeu.getIA().getVirusIsIn() && joueur.isParefeu() && joueur.isDecodeur() && joueur.isZoneQuarantaine())
+    				this.hud.setDecouverte(numZone, IAZoneCode.Virus);
+    			else
+    				this.hud.setDecouverte(numZone, iazone.getCodeZone());
     		}
     	}
     	if(this.touches[Touche.Passer].is_appuie()){
@@ -85,7 +91,7 @@ public class FenetreJeu extends BasicGame {
     	}
     	
     	if(this.timepast-this.hud.getTime()>2000){
-    		this.hud.setNotification("", this.timepast);
+    		this.hud.setNotification(this.jeu.getJoueurActuel(),"", this.timepast);
     	}
     }
     

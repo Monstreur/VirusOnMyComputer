@@ -78,41 +78,129 @@ public class IntelligenceArtificielle {
 		case 7:
 			return "Vous venez de trouvez un code permettant d'accéder aux zones Jaunes.";
 		case 8:
-			return "Vous êtes tombé dans un piege.";
+			return "Vous êtes tombé dans un piege. ";
 		default:
 			return "Il n'y a rien ici";
 		}
 	}
 
-public void doActionForCase(Joueur j, IAZone iazone) {
+	public String doActionForCase(Joueur j, IAZone iazone, Plateau p) {
 		switch (iazone.getCodeNum()) {
-		case 1:
-			j.setParefeu(true);
-			break;
-		case 2:
-			j.setDecodeur(true);
-			break;
-		case 3:
-			j.setZoneQuarantaine(true);
-			break;
-		case 4:
-			j.setCodeAccesBlue(true);
-			break;
-		case 5:
-			j.setCodeAccesRed(true);
-			break;
-		case 6:
-			j.setCodeAccesGreen(true);;
-			break;
-		case 7:
-			j.setCodeAccesYellow(true);
-			break;
-		case 8:
-			System.out.println("PIEGE A FAIRE");
-			break;
-		default:
-			break;
+			case 1:
+				j.setParefeu(true);
+				break;
+			case 2:
+				j.setDecodeur(true);
+				break;
+			case 3:
+				j.setZoneQuarantaine(true);
+				break;
+			case 4:
+				j.setCodeAccesBlue(true);
+				break;
+			case 5:
+				j.setCodeAccesRed(true);
+				break;
+			case 6:
+				j.setCodeAccesGreen(true);
+				break;
+			case 7:
+				j.setCodeAccesYellow(true);
+				break;
+			case 8:
+				List<Integer> nums = new ArrayList<Integer>();
+				nums.add(0);
+				if(j.howManyColorCanAcces()>1)
+					nums.add(1);
+				if(j.isParefeu())
+					nums.add(2);
+				if(j.isDecodeur())
+					nums.add(3);
+				if(j.isZoneQuarantaine())
+					nums.add(4);
+				int rand = ManipulationNombre.randomIn(nums, new ArrayList<Integer>());
+				int rand2;
+				int num = 0;
+				switch(rand){
+					case 0:
+						rand2 = ManipulationNombre.randomRange(0, j.howManyColorCanAcces()-1);
+						num = 0;
+						if(j.canAccesTo(Couleur.BLUE)){
+							if(rand2==num){
+								j.setCaseActuelle(p.getZoneApparition(Couleur.BLUE));
+								return "Vous avez été téléporté à la Zone d'Appariton Bleue";
+							}
+							num++;
+						}
+						if(j.canAccesTo(Couleur.RED)){
+							if(rand2==num){
+								j.setCaseActuelle(p.getZoneApparition(Couleur.RED));
+								return "Vous avez été téléporté à la Zone d'Appariton Rouge";
+							}
+							num++;
+						}
+						if(j.canAccesTo(Couleur.GREEN)){
+							if(rand2==num){
+								j.setCaseActuelle(p.getZoneApparition(Couleur.GREEN));
+								return "Vous avez été téléporté à la Zone d'Appariton Verte";
+							}
+							num++;
+						}
+						if(j.canAccesTo(Couleur.YELLOW)){
+							if(rand2==num){
+								j.setCaseActuelle(p.getZoneApparition(Couleur.YELLOW));
+								return "Vous avez été téléporté à la Zone d'Appariton Jaune";
+							}
+							num++;
+						}
+						break;
+					case 1:
+						rand2 = ManipulationNombre.randomRange(0, j.howManyColorCanAcces()-1);
+						num = 0;
+						if(j.canAccesTo(Couleur.BLUE)){
+							if(rand2==num){
+								j.setCodeAccesBlue(false);
+								return "Ce piege vous a fait perdre votre Code d'acces Bleue";
+							}
+							num++;
+						}
+						if(j.canAccesTo(Couleur.RED)){
+							if(rand2==num){
+								j.setCodeAccesRed(false);
+								return "Ce piege vous a fait perdre votre Code d'acces Rouge";
+							}
+							num++;
+						}
+						if(j.canAccesTo(Couleur.GREEN)){
+							if(rand2==num){
+								j.setCodeAccesGreen(false);
+								return "Ce piege vous a fait perdre votre Code d'acces Verte";
+							}
+							num++;
+						}
+						if(j.canAccesTo(Couleur.YELLOW)){
+							if(rand2==num){
+								j.setCodeAccesYellow(false);
+								return "Ce piege vous a fait perdre votre Code d'acces Jaune";
+							}
+							num++;
+						}
+						break;
+					case 2:
+						j.setParefeu(false);
+						return "Ce piege vous a fait perdre votre Parefeu";
+					case 3:
+						j.setDecodeur(false);
+						return "Ce piege vous a fait perdre votre Decodeur";
+					case 4:
+						j.setZoneQuarantaine(false);
+						return "Ce piege vous a fait perdre votre Zone de Quarantaine";
+				}
+				break;
+			default:
+				break;
 		}
+		return "";
 	}
 	
 	/*

@@ -114,8 +114,15 @@ public class Jeu {
 		Zone caseActuelle = (Zone)joueur.getCaseActuelle();
 		IAZone iazone = ia.getCase(joueurActuel, caseActuelle.getNum());
 		System.out.println(caseActuelle+" : "+ia.getInfosOnCase(iazone));
-		ia.doActionForCase(joueur, iazone);
-		return ia.getInfosOnCase(iazone);
+		String message;
+		if(iazone.getCodeNum()==8 && caseActuelle.getNum()==ia.getVirusIsIn() && joueur.isParefeu() && joueur.isDecodeur() && joueur.isZoneQuarantaine())
+			message = "Vous avez trouvez le Virus !";
+		else{
+			message = ia.getInfosOnCase(iazone);
+			message+=ia.doActionForCase(joueur, iazone, plateau);
+		}
+		
+		return message;
 	}
 
 	public void joueurSuivant(){

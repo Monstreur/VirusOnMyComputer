@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.newdawn.slick.Graphics;
 
+import autres.Couleur;
 import huds.CarnetDeBord;
 import huds.Chat;
 import intelligenceArtificielle.IAZoneCode;
@@ -22,11 +23,11 @@ public class Hud {
 		this.carnetDeBord = new CarnetDeBord(x, y, width, height-200);
 	}
 	
-	public void setNotification(String notification,int time){
+	public void setNotification(Couleur c, String notification,int time){
 		this.timeLastNotif=time;
 		this.notification.setString(notification);
 		if(!notification.isEmpty())
-			this.chat.add(notification);
+			this.chat.add(c, notification);
 	}
 	public void setDecouverte(int numZone, IAZoneCode iazonecode){
 		this.carnetDeBord.setDecouverte(numZone, iazonecode);
