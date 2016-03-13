@@ -18,6 +18,7 @@ import Zones.ZoneMarchable;
 import jeu.Hud;
 import jeu.Jeu;
 import autres.Touche;
+import intelligenceArtificielle.IAZone;
 
 public class FenetreJeu extends BasicGame {
     private GameContainer container;
@@ -71,6 +72,11 @@ public class FenetreJeu extends BasicGame {
     	if(this.touches[Touche.Explorer].is_appuie() && joueur.getCaseActuelle() instanceof Zone){
     		this.hud.setNotification(this.jeu.explore(), this.timepast);
     		this.touches[Touche.Explorer].relache();
+    		int numZone = ((Zone)this.jeu.getListeJoueurs().getJoueur(this.jeu.getJoueurActuel()).getCaseActuelle()).getNum();
+    		IAZone iazone = this.jeu.getIA().getCase(this.jeu.getJoueurActuel(), numZone);
+    		if(iazone.getCodeNum()!=0){
+    			this.hud.setDecouverte(numZone, iazone.getCodeZone());
+    		}
     	}
     	if(this.touches[Touche.Passer].is_appuie()){
     		System.out.println("Joueur SUIVANT !!!");

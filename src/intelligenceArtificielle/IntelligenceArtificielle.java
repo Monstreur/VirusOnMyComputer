@@ -58,7 +58,7 @@ public class IntelligenceArtificielle {
 	}
 	
 	public String getInfosOnCase(IAZone iazone){
-		return getMessageForIAZoneCode(iazone.getCodeZone());
+		return getMessageForIAZoneCode(iazone.getCodeNum());
 	}
 
 	private String getMessageForIAZoneCode(int codeZone) {
@@ -85,7 +85,7 @@ public class IntelligenceArtificielle {
 	}
 
 public void doActionForCase(Joueur j, IAZone iazone) {
-		switch (iazone.getCodeZone()) {
+		switch (iazone.getCodeNum()) {
 		case 1:
 			j.setParefeu(true);
 			break;

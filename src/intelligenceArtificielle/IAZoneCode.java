@@ -21,4 +21,20 @@ public enum IAZoneCode {
 		return this.code;
 	}
 
+	public String getLetter() {
+		
+		switch(this.code){
+			case 0: return "X";
+			case 1: return "Pa";
+			case 2: return "De";
+			case 3: return "ZQ";
+			case 4: return "CB";
+			case 5: return "CR";
+			case 6: return "CV";
+			case 7: return "CJ";
+			case 8: return "Pi";
+			default: return null;
+		}
+	}
+
 }

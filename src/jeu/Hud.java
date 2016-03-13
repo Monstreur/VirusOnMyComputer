@@ -4,18 +4,22 @@ import java.util.List;
 
 import org.newdawn.slick.Graphics;
 
+import huds.CarnetDeBord;
 import huds.Chat;
+import intelligenceArtificielle.IAZoneCode;
 import slickAdding.TextMultiLines;
 
 public class Hud {
 	private TextMultiLines notification;
 	private int timeLastNotif;
 	private Chat chat;
+	private CarnetDeBord carnetDeBord;
 	
 	public Hud(int x, int y, int width, int height){
 		this.notification=new TextMultiLines("", 20);
 		this.timeLastNotif=0;
 		this.chat = new Chat(x,y+height-200,width,200,">");
+		this.carnetDeBord = new CarnetDeBord(x, y, width, height-200);
 	}
 	
 	public void setNotification(String notification,int time){
@@ -23,6 +27,9 @@ public class Hud {
 		this.notification.setString(notification);
 		if(!notification.isEmpty())
 			this.chat.add(notification);
+	}
+	public void setDecouverte(int numZone, IAZoneCode iazonecode){
+		this.carnetDeBord.setDecouverte(numZone, iazonecode);
 	}
 	
 	public int getTime() {
@@ -32,6 +39,7 @@ public class Hud {
 	public void render(Graphics g, int x, int y){
 		this.chat.renderMessage(g);
 		this.notification.render(g, x+15, y+130);
+		this.carnetDeBord.render(g);
 		this.chat.render(g);
 	}
 	

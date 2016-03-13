@@ -155,6 +155,10 @@ public class Jeu {
 	public Couleur getJoueurActuel() {
 		return this.joueurActuel;
 	}
+
+	public IntelligenceArtificielle getIA() {
+		return this.ia;
+	}
 	
 	
 }

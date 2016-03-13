@@ -12,10 +12,21 @@ public class IAZone{
 	public int getNumZone() {
 		return this.numZone;
 	}
-	public int getCodeZone() {
+	public int getCodeNum() {
 		return this.iaCode.getCode();
+	}
+	public IAZoneCode getCodeZone() {
+		return this.iaCode;
 	}
 	public String toString(){
 		return "("+this.numZone+" : "+this.iaCode.getCode()+")";
+	}
+
+	public void setCodeZone(IAZoneCode iazonecode) {
+		this.iaCode=iazonecode;
+	}
+
+	public String getCodeLetter() {
+		return this.iaCode.getLetter();
 	}
 }
