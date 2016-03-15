@@ -13,6 +13,7 @@ public class InputText {
 	private String placeholder;
 	private String text;
 	private boolean focused;
+	private boolean enterPressed;
 	
 	public InputText(int x, int y, int width, int height, String placeholder, String text){
 		this.x = x;
@@ -34,20 +35,41 @@ public class InputText {
 		g.fillRect(x, y, width, height);
 		g.setColor(Color.white);
 		g.fillRect(x+2, y+2, width-4, height-4);
-		g.setColor(Color.black);
-		g.drawString(this.text, x+5, y+7);
+		if(this.text.isEmpty()){
+			g.setColor(Color.gray);
+			g.drawString(this.placeholder, x+5, y+7);
+		}else{
+			g.setColor(Color.black);
+			g.drawString(this.text, x+5, y+7);
+		}
 	}
 	public int getHeight() {
 		return this.height;
 	}
+	
+	public String getTexte(){
+		return this.text;
+	}
+	
+	public boolean getEnterPressed(){
+		return this.enterPressed;
+	}
+	
+	public void reinitInput(){
+		this.text="";
+		this.enterPressed=false;
+	}
 
-    public void keyPressed(int key, char c){
+    public boolean keyPressed(int key, char c){
     	if(this.focused){
 	    	if(Input.KEY_BACK==key && this.text.length()>0)
 	    		this.text = this.text.substring(0,this.text.length()-1);
+	    	else if(Input.KEY_ENTER==key && this.text.length()>0)
+	    		this.enterPressed=true;
 	    	else
 	    		this.text+=c;
     	}
+    	return focused;
     }
 
     public void mousePressed(int button, int x2, int y2) {

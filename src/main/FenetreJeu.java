@@ -71,21 +71,20 @@ public class FenetreJeu extends BasicGame {
     	this.deplacementPossible = this.jeu.deplacementPossibleJoueur(joueur);
     	
     	if(this.touches[Touche.Explorer].is_appuie() && joueur.getCaseActuelle() instanceof Zone){
-    		this.hud.setNotification(this.jeu.getJoueurActuel(),this.jeu.explore(), this.timepast);
-    		this.touches[Touche.Explorer].relache();
-    		int numZone=0;
-    		if(joueur.getCaseActuelle() instanceof Zone)
-    			numZone = ((Zone)joueur.getCaseActuelle()).getNum();
+			int numZone = ((Zone)joueur.getCaseActuelle()).getNum();
     		IAZone iazone = this.jeu.getIA().getCase(this.jeu.getJoueurActuel(), numZone);
     		if(iazone.getCodeNum()!=0){
+    			System.out.println(iazone.getCodeNum());
     			if(iazone.getCodeNum()==8 && numZone==this.jeu.getIA().getVirusIsIn() && joueur.isParefeu() && joueur.isDecodeur() && joueur.isZoneQuarantaine())
     				this.hud.setDecouverte(numZone, IAZoneCode.Virus);
     			else
     				this.hud.setDecouverte(numZone, iazone.getCodeZone());
     		}
+    		this.hud.setNotification(this.jeu.getJoueurActuel(),this.jeu.explore(), this.timepast);
+    		this.touches[Touche.Explorer].relache();
+    		this.touches[Touche.Passer].appuie(this.timepast);
     	}
     	if(this.touches[Touche.Passer].is_appuie()){
-    		System.out.println("Joueur SUIVANT !!!");
     		this.jeu.joueurSuivant();
     		this.touches[Touche.Passer].relache();
     	}
@@ -93,25 +92,28 @@ public class FenetreJeu extends BasicGame {
     	if(this.timepast-this.hud.getTime()>2000){
     		this.hud.setNotification(this.jeu.getJoueurActuel(),"", this.timepast);
     	}
+    	
+    	this.hud.update(this.jeu.getJoueurActuel());
     }
     
     public void keyPressed(int key, char c){
 
-    	if (this.touches[Touche.Attaquer].getKey() == key)
-    		this.touches[Touche.Attaquer].appuie(this.timepast);
-    	if (this.touches[Touche.Explorer].getKey() == key)
-    		this.touches[Touche.Explorer].appuie(this.timepast);
-    	if (this.touches[Touche.Passer].getKey() == key)
-    		this.touches[Touche.Passer].appuie(this.timepast);
-	
-    	this.hud.keyPressed(key, c);
+    	boolean focused = this.hud.keyPressed(key, c);
+    	if(!focused){
+        	if (Input.KEY_F == key) {
+                container.exit();
+            }
+	    	if (this.touches[Touche.Attaquer].getKey() == key)
+	    		this.touches[Touche.Attaquer].appuie(this.timepast);
+	    	if (this.touches[Touche.Explorer].getKey() == key)
+	    		this.touches[Touche.Explorer].appuie(this.timepast);
+	    	if (this.touches[Touche.Passer].getKey() == key)
+	    		this.touches[Touche.Passer].appuie(this.timepast);
+    	}
     }
 
     @Override
     public void keyReleased(int key, char c) {
-    	if (Input.KEY_F == key) {
-            container.exit();
-        }
     	
     	if (this.touches[Touche.Attaquer].getKey() == key)
     		this.touches[Touche.Attaquer].relache();

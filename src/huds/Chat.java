@@ -78,8 +78,8 @@ public class Chat {
 		this.text.draw(g);
 	}
 
-    public void keyPressed(int key, char c){
-    	this.text.keyPressed(key, c);
+    public boolean keyPressed(int key, char c){
+    	return this.text.keyPressed(key, c);
     }
 
     public void mousePressed(int button, int x, int y) {
@@ -116,4 +116,8 @@ public class Chat {
     		}
     	}
     }
+
+	public InputText getInput() {
+		return this.text;
+	}
 }

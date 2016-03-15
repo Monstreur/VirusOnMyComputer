@@ -44,9 +44,16 @@ public class Hud {
 		this.chat.render(g);
 	}
 	
+	public void update(Couleur joueurActuel){
+    	if(this.chat.getInput().getEnterPressed()){
+    		this.chat.add(joueurActuel, this.chat.getInput().getTexte());
+    		this.chat.getInput().reinitInput();
+    	}
+	}
+	
 
-    public void keyPressed(int key, char c){
-    	this.chat.keyPressed(key, c);
+    public boolean keyPressed(int key, char c){
+    	return this.chat.keyPressed(key, c);
     }
 
     public void mousePressed(int button, int x, int y) {
