@@ -104,7 +104,8 @@ public class Jeu {
 	
 	
 	public void deplacementJoueur(Joueur joueur,ZoneMarchable zm) {
-		joueur.removeDeplacement(this.nbDeplacementMaxJoueur);
+		/*** A REMETRE ***/
+		//joueur.removeDeplacement(this.nbDeplacementMaxJoueur);
 		joueur.setCaseActuelle(zm);
 		System.out.println("Vous êtes maintenant sur la case "+joueur.getCaseActuelle());
 	}

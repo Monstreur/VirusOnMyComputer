@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.input.Cursor;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -17,6 +18,8 @@ import Zones.Zone;
 import Zones.ZoneMarchable;
 import jeu.Hud;
 import jeu.Jeu;
+import autres.AlertWindow;
+import autres.Couleur;
 import autres.Touche;
 import intelligenceArtificielle.IAZone;
 import intelligenceArtificielle.IAZoneCode;
@@ -30,6 +33,8 @@ public class FenetreJeu extends BasicGame {
     private int mouseY;
     private Touche[] touches;
 	private List<ZoneMarchable> deplacementPossible;
+	private AlertWindow alertWindow;
+	private Font font;
 
 	public FenetreJeu() {
         super("Virus on my Computer");
@@ -54,12 +59,16 @@ public class FenetreJeu extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
+    	this.font = g.getFont();
     	this.jeu.render(container,g);
     	
     	for (ZoneMarchable zm : deplacementPossible) {
 			zm.drawHL();
 		}
     	this.hud.render(g, container.getHeight(), 0);
+    	
+    	if(this.alertWindow!=null)
+    		this.alertWindow.render(g);
     }
 
     @Override
@@ -75,14 +84,16 @@ public class FenetreJeu extends BasicGame {
     		IAZone iazone = this.jeu.getIA().getCase(this.jeu.getJoueurActuel(), numZone);
     		if(iazone.getCodeNum()!=0){
     			System.out.println(iazone.getCodeNum());
-    			if(iazone.getCodeNum()==8 && numZone==this.jeu.getIA().getVirusIsIn() && joueur.isParefeu() && joueur.isDecodeur() && joueur.isZoneQuarantaine())
+    			if(iazone.getCodeNum()==8 && numZone==this.jeu.getIA().getVirusIsIn() && joueur.isParefeu() && joueur.isDecodeur() && joueur.isZoneQuarantaine()){
     				this.hud.setDecouverte(numZone, IAZoneCode.Virus);
-    			else
+    				this.joueurWin(this.jeu.getJoueurActuel());
+    			}else
     				this.hud.setDecouverte(numZone, iazone.getCodeZone());
     		}
     		this.hud.setNotification(this.jeu.getJoueurActuel(),this.jeu.explore(), this.timepast);
     		this.touches[Touche.Explorer].relache();
-    		this.touches[Touche.Passer].appuie(this.timepast);
+    		/*** A REMETRE ***/
+    		//this.touches[Touche.Passer].appuie(this.timepast);
     	}
     	if(this.touches[Touche.Passer].is_appuie()){
     		this.jeu.joueurSuivant();
@@ -96,13 +107,20 @@ public class FenetreJeu extends BasicGame {
     	this.hud.update(this.jeu.getJoueurActuel());
     }
     
-    public void keyPressed(int key, char c){
+    private void joueurWin(Couleur joueurActuel) throws SlickException {
+    	this.alertWindow = new AlertWindow(this.font,"Victoire !","Vous avez gagné la partie. Bravo !",container.getWidth(),container.getHeight());
+	}
+
+	public void keyPressed(int key, char c){
 
     	boolean focused = this.hud.keyPressed(key, c);
     	if(!focused){
         	if (Input.KEY_F == key) {
                 container.exit();
             }
+        	if(Input.KEY_G == key){
+        		this.alertWindow = null;
+        	}
 	    	if (this.touches[Touche.Attaquer].getKey() == key)
 	    		this.touches[Touche.Attaquer].appuie(this.timepast);
 	    	if (this.touches[Touche.Explorer].getKey() == key)

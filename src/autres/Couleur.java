@@ -85,6 +85,18 @@ public enum Couleur {
 	}
 	  
 	public String toString(){
-		return this.name;
+		switch (this.name) {
+			case "BLUE":
+				return "Bleu";
+			case "RED":
+				return "Rouge";
+			case "GREEN":
+				return "Vert";
+			case "YELLOW":
+				return "Jaune";
+	
+			default:
+				return "";
+		}
 	}
 }

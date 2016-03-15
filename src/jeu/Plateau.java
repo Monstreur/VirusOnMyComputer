@@ -107,7 +107,7 @@ public class Plateau {
 	
 	public static List<Integer> getZoneNums(Couleur color){
 		List<Integer> ret = new ArrayList<Integer>();
-		if(color.toString().equals("BLUE")){
+		if(color.name().equals("BLUE")){
 			ret.add(1);
 			ret.add(5);
 			ret.add(9);
@@ -115,7 +115,7 @@ public class Plateau {
 			ret.add(17);
 			ret.add(21);
 		}
-		else if(color.toString().equals("RED")){
+		else if(color.name().equals("RED")){
 			ret.add(2);
 			ret.add(6);
 			ret.add(10);
@@ -123,7 +123,7 @@ public class Plateau {
 			ret.add(18);
 			ret.add(22);
 		}
-		else if(color.toString().equals("GREEN")){
+		else if(color.name().equals("GREEN")){
 			ret.add(3);
 			ret.add(7);
 			ret.add(11);
@@ -131,7 +131,7 @@ public class Plateau {
 			ret.add(19);
 			ret.add(23);
 		}
-		else if(color.toString().equals("YELLOW")){
+		else if(color.name().equals("YELLOW")){
 			ret.add(4);
 			ret.add(8);
 			ret.add(12);

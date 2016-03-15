@@ -27,10 +27,10 @@ public enum Joueur {
 		this.parefeu = false;
 		this.decodeur = false;
 		this.zoneQuarantaine = false;
-		this.codeAccesBlue = (this.color.toString().equals("BLUE"));
-		this.codeAccesRed = (this.color.toString().equals("RED"));
-		this.codeAccesGreen = (this.color.toString().equals("GREEN"));
-		this.codeAccesYellow = (this.color.toString().equals("YELLOW"));
+		this.codeAccesBlue = (this.color.name().equals("BLUE"));
+		this.codeAccesRed = (this.color.name().equals("RED"));
+		this.codeAccesGreen = (this.color.name().equals("GREEN"));
+		this.codeAccesYellow = (this.color.name().equals("YELLOW"));
 		this.stockDeplacement = 0;
 	}
 	
