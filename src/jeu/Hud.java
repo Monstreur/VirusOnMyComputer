@@ -1,7 +1,6 @@
 package jeu;
 
-import java.util.List;
-
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import autres.Couleur;
@@ -23,7 +22,7 @@ public class Hud {
 		this.carnetDeBord = new CarnetDeBord(x, y, width, height-200);
 	}
 	
-	public void setNotification(Couleur c, String notification,int time){
+	public void setNotification(Color c, String notification,int time){
 		this.timeLastNotif=time;
 		this.notification.setString(notification);
 		if(!notification.isEmpty())
@@ -46,7 +45,7 @@ public class Hud {
 	
 	public void update(Couleur joueurActuel){
     	if(this.chat.getInput().getEnterPressed()){
-    		this.chat.add(joueurActuel, this.chat.getInput().getTexte());
+    		this.chat.add(joueurActuel.getColorDialogue(), this.chat.getInput().getTexte());
     		this.chat.getInput().reinitInput();
     	}
 	}

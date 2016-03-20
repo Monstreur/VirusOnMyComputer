@@ -4,7 +4,6 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Cursor;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Font;
@@ -29,8 +28,6 @@ public class FenetreJeu extends BasicGame {
     private int timepast;
     private Jeu jeu;
     private Hud hud;
-    private int mouseX;
-    private int mouseY;
     private Touche[] touches;
 	private List<ZoneMarchable> deplacementPossible;
 	private AlertWindow alertWindow;
@@ -90,10 +87,16 @@ public class FenetreJeu extends BasicGame {
     			}else
     				this.hud.setDecouverte(numZone, iazone.getCodeZone());
     		}
-    		this.hud.setNotification(this.jeu.getJoueurActuel(),this.jeu.explore(), this.timepast);
+    		this.hud.setNotification(this.jeu.getJoueurActuel().getColor(),this.jeu.explore(), this.timepast);
     		this.touches[Touche.Explorer].relache();
-    		/*** A REMETRE ***/
-    		//this.touches[Touche.Passer].appuie(this.timepast);
+    		this.touches[Touche.Passer].appuie(this.timepast);
+    	}
+    	
+    	Joueur joueurInSameCase = this.jeu.getListeJoueurs().sameCase(this.jeu.getJoueurActuel());
+    	if(this.touches[Touche.Attaquer].is_appuie() && joueurInSameCase!=null){
+    		this.hud.setNotification(this.jeu.getJoueurActuel().getColor(),this.jeu.attaque(this.jeu.getListeJoueurs().getJoueur(this.jeu.getJoueurActuel()),joueurInSameCase), this.timepast);
+    		this.touches[Touche.Attaquer].relache();
+			this.touches[Touche.Passer].appuie(this.timepast);
     	}
     	if(this.touches[Touche.Passer].is_appuie()){
     		this.jeu.joueurSuivant();
@@ -101,7 +104,7 @@ public class FenetreJeu extends BasicGame {
     	}
     	
     	if(this.timepast-this.hud.getTime()>2000){
-    		this.hud.setNotification(this.jeu.getJoueurActuel(),"", this.timepast);
+    		this.hud.setNotification(this.jeu.getJoueurActuel().getColor(),"", this.timepast);
     	}
     	
     	this.hud.update(this.jeu.getJoueurActuel());
@@ -144,9 +147,6 @@ public class FenetreJeu extends BasicGame {
 
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-    	this.mouseX=newx;
-    	this.mouseY=newy;
-    	
     	this.jeu.getPlateau().mouseMoved(oldx, oldy, newx, newy);
     	this.hud.mouseMoved(oldx, oldy, newx, newy);
     }

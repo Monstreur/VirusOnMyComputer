@@ -6,17 +6,19 @@ import java.util.List;
 import org.newdawn.slick.Color;
 
 public enum Couleur {
-	BLUE ("BLUE",50,50,255),
-	RED ("RED",255,50,50),
-	GREEN ("GREEN",50,255,50),
-	YELLOW ("YELLOW",255,255,50);
+	BLUE ("BLUE",50,50,255,125,125,255),
+	RED ("RED",255,50,50,255,125,125),
+	GREEN ("GREEN",50,255,50,125,255,125),
+	YELLOW ("YELLOW",255,255,50,255,255,125);
 	
 	private String name;
 	private Color color;
+	private Color colorDialogue;
 	
-	Couleur(String name, int r, int g, int b){
+	Couleur(String name, int r, int g, int b, int r2, int g2, int b2){
 		this.name = name;
 		this.color = new Color(r,g,b);
+		this.colorDialogue = new Color(r2,g2,b2);
 	}
 	
 	public static Couleur RandomColor(List<Couleur> excepts){
@@ -82,6 +84,10 @@ public enum Couleur {
 	  
 	public Color getColor(){
 		return this.color;
+	}
+	
+	public Color getColorDialogue(){
+		return this.colorDialogue;
 	}
 	  
 	public String toString(){

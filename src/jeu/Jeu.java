@@ -13,6 +13,7 @@ import Zones.Passerelle;
 import Zones.Zone;
 import Zones.ZoneMarchable;
 import autres.Couleur;
+import autres.ManipulationNombre;
 import intelligenceArtificielle.IAZone;
 import intelligenceArtificielle.IntelligenceArtificielle;
 
@@ -104,8 +105,7 @@ public class Jeu {
 	
 	
 	public void deplacementJoueur(Joueur joueur,ZoneMarchable zm) {
-		/*** A REMETRE ***/
-		//joueur.removeDeplacement(this.nbDeplacementMaxJoueur);
+		joueur.removeDeplacement(this.nbDeplacementMaxJoueur);
 		joueur.setCaseActuelle(zm);
 		System.out.println("Vous êtes maintenant sur la case "+joueur.getCaseActuelle());
 	}
@@ -120,12 +120,122 @@ public class Jeu {
 			message = "Vous avez trouvez le Virus !";
 		else{
 			message = ia.getInfosOnCase(iazone);
-			message+=ia.doActionForCase(joueur, iazone, plateau);
+			message += ia.doActionForCase(joueur, iazone, plateau);
 		}
 		
 		return message;
 	}
 
+	public String attaque(Joueur j, Joueur j2) {
+		int r = ManipulationNombre.randomRange(0, 4);
+		if(r<2){
+			List<Integer> nums = new ArrayList<Integer>();
+			nums.add(0);
+			if(this.joueurs.howManyColorCanPick(j,j2)>0)
+				nums.add(1);
+			if(j2.isParefeu() && !j.isParefeu())
+				nums.add(2);
+			if(j2.isDecodeur() && !j.isDecodeur())
+				nums.add(3);
+			if(j2.isZoneQuarantaine() && !j.isZoneQuarantaine())
+				nums.add(4);
+			int rand = ManipulationNombre.randomIn(nums, new ArrayList<Integer>());
+			int rand2;
+			int num = 0;
+			switch(rand){
+				case 0:
+					rand2 = ManipulationNombre.randomRange(0, j2.howManyColorCanAcces()-1);
+					num = 0;
+					if(j2.canAccesTo(Couleur.BLUE)){
+						if(rand2==num){
+							j2.setCaseActuelle(plateau.getZoneApparition(Couleur.BLUE));
+							/*
+							 * Pour les autres joueurs.
+							 * return "Le joueur "+j2.getColor()+" a été téléporté à la Zone d'Appariton Bleue";
+							 */
+							return "Vous avez été téléporté à la Zone d'Appariton Bleue";
+						}
+						num++;
+					}
+					if(j2.canAccesTo(Couleur.RED)){
+						if(rand2==num){
+							j2.setCaseActuelle(plateau.getZoneApparition(Couleur.RED));
+							return "Vous avez été téléporté à la Zone d'Appariton Rouge";
+						}
+						num++;
+					}
+					if(j2.canAccesTo(Couleur.GREEN)){
+						if(rand2==num){
+							j2.setCaseActuelle(plateau.getZoneApparition(Couleur.GREEN));
+							return "Vous avez été téléporté à la Zone d'Appariton Verte";
+						}
+						num++;
+					}
+					if(j2.canAccesTo(Couleur.YELLOW)){
+						if(rand2==num){
+							j2.setCaseActuelle(plateau.getZoneApparition(Couleur.YELLOW));
+							return "Vous avez été téléporté à la Zone d'Appariton Jaune";
+						}
+						num++;
+					}
+					break;
+				case 1:
+					rand2 = ManipulationNombre.randomRange(0, this.joueurs.howManyColorCanPick(j, j2)-1);
+					num = 0;
+					if(j2.canAccesTo(Couleur.BLUE) && !j.canAccesTo(Couleur.BLUE)){
+						if(rand2==num){
+							j.setCodeAccesBlue(true);
+							j2.setCodeAccesBlue(false);
+							/*
+							 * Pour le joueur 1.
+							 * return "Vous avez volé le Code d'acces Bleue du joueur "+j2.getColor();
+							 * Pour les autres joueurs.
+							 * return "Le joueur "+j.getColor()+" a volé le Code d'acces Bleue du joueur "+j2.getColor();
+							 */
+							return "Le joueur "+j.getColor()+" vous a volé votre Code d'acces Bleue";
+						}
+						num++;
+					}
+					if(j2.canAccesTo(Couleur.RED) && !j.canAccesTo(Couleur.RED)){
+						if(rand2==num){
+							j.setCodeAccesRed(true);
+							j2.setCodeAccesRed(false);
+							return "Le joueur "+j.getColor()+" vous a volé votre Code d'acces Rouge";
+						}
+						num++;
+					}
+					if(j2.canAccesTo(Couleur.GREEN) && !j.canAccesTo(Couleur.GREEN)){
+						if(rand2==num){
+							j.setCodeAccesGreen(true);
+							j2.setCodeAccesGreen(false);
+							return "Le joueur "+j.getColor()+" vous a volé votre Code d'acces Vert";
+						}
+						num++;
+					}
+					if(j2.canAccesTo(Couleur.YELLOW) && !j.canAccesTo(Couleur.YELLOW)){
+						if(rand2==num){
+							j.setCodeAccesYellow(true);
+							j2.setCodeAccesYellow(false);
+							return "Le joueur "+j.getColor()+" vous a volé votre Code d'acces Jaune";
+						}
+						num++;
+					}
+					case 2:
+						j.setParefeu(true);
+						j2.setParefeu(false);
+						return "Le joueur "+j.getColor()+" vous a volé votre Parefeu";
+					case 3:
+						j.setDecodeur(true);
+						j2.setDecodeur(false);
+						return "Le joueur "+j.getColor()+" vous a volé votre Decodeur";
+					case 4:
+						j.setZoneQuarantaine(true);
+						j2.setZoneQuarantaine(false);
+						return "Le joueur "+j.getColor()+" vous a volé votre Zone de Quarantaine";
+			}
+		}
+		return "Le joueur "+j.getColor()+" a manqué le joueur "+j2.getColor();
+	}
 	public void joueurSuivant(){
 		if(this.joueurActuel.name().equals("BLUE"))
 			this.joueurActuel=Couleur.RED;

@@ -10,7 +10,6 @@ public class ScrollPanel {
 	private int height;
 	private int yScroll;
 	private int hScroll;
-	private boolean dragged;
 	
 	public ScrollPanel(int x, int y, int width, int height){
 		this.x = x;
